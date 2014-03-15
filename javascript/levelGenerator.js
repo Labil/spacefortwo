@@ -89,7 +89,6 @@ LevelGenerator.prototype.union = function(p, q){
 LevelGenerator.prototype.checkPercolation = function(){
 	if(this.find(this.topNode.root, this.bottomNode.root)){
 		var threshold = (this.nums.length / this.size) * 100;
-		console.log("PERCOLATES! at threshold: " + threshold);
 		return true;
 	}
 	return false;
@@ -98,7 +97,13 @@ LevelGenerator.prototype.checkPercolation = function(){
 LevelGenerator.prototype.generateLevel = function(){
 	while(this.checkPercolation() == false){
 		this.openRandomNode();
-	}	
+	}
+
+	for(var i = 0; i < this.nodes.length; i++){
+		if(!this.find(this.nodes[i].root, this.bottomNode.root)){
+			this.nodes[i].isOpen = false;
+		}
+	}
 
 	var level = [];
 	for(var i = 0; i < this.nodes.length; i++){

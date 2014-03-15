@@ -6,13 +6,14 @@ var Player = function(world, xPos, yPos, tileSize, stringGraphics){
 	this.xPos = xPos;
 	this.yPos = yPos;
 	this.graphics = stringGraphics;
+	//this.currentTile = currentTile;
 	//this.name = name;
 
 	this.moveDirection = {
-		"LEFT" : [-this.tileSize, 0],
-		"RIGHT" : [this.tileSize, 0],
-		"UP" : [0, -this.tileSize],
-		"DOWN" : [0, this.tileSize]
+		"LEFT" : [this.tileSize, 0],
+		"RIGHT" : [-this.tileSize, 0],
+		"UP" : [0, this.tileSize],
+		"DOWN" : [0, -this.tileSize]
 	};	
 
 	this.setupEventListener();
@@ -45,8 +46,8 @@ Player.prototype.setupEventListener = function(){
 };
 
 Player.prototype.checkMove = function(dir){
-	var prospectiveXPos = this.xPos + dir[0];
-	var prospectiveYPos = this.yPos + dir[1];
+	var prospectiveXPos = this.xPos - dir[0];
+	var prospectiveYPos = this.yPos - dir[1];
 
 	for(var i = 0; i < this.world.walls.length; i++){
 		if(this.world.walls[i].xPos == prospectiveXPos &&
@@ -58,9 +59,10 @@ Player.prototype.checkMove = function(dir){
 };
 
 Player.prototype.move = function(dir){
+
+	if(dir == this.moveDirection.LEFT)
 	if(this.checkMove(dir)){
-		this.xPos += dir[0];
-		this.yPos += dir[1];
+		this.world.moveWorld(dir);
 	}
 };
 

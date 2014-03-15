@@ -77,25 +77,45 @@ World.prototype.loadLevel = function(){
 		}
 	}
 
-	var pos = this.getRandomMapPosition();
+	var pos = {
+		"x" : this.canvasW /2 - this.tileSize/2,
+		"y" : this.canvasH /2 - this.tileSize/2
+	}
 	this.player1 = new Player(this, pos.x, pos.y, this.tileSize, "player");
+	this.setRandomMapStartTile();
 };
 
-World.prototype.getRandomMapPosition = function(){
+
+
+World.prototype.setRandomMapStartTile = function(){
 	var range = this.floors.length - 0;
 	var rand = Math.floor(Math.random() * range);
 	console.log("random is: " + rand);
 
-	if(!(this.levelGenerator.find(this.floors[rand].id, this.levelGenerator.bottomNode.root))){
-		console.log("Player pos is not connected");
-		return this.getRandomMapPosition();
+	var zeroPosX = this.floors[rand].xPos;
+	var zeroPosY = this.floors[rand].yPos;
+
+	for(var i = 0; i < this.walls.length; i++){
+		this.walls[i].xPos += this.player1.xPos - zeroPosX;
+		this.walls[i].yPos += this.player1.yPos - zeroPosY;
+	}
+	for(var i = 0; i < this.floors.length; i++){
+		this.floors[i].xPos += this.player1.xPos - zeroPosX;
+		this.floors[i].yPos += this.player1.yPos - zeroPosY;
 	}
 
-	var pos = {
-		"x" : this.floors[rand].xPos,
-		"y" : this.floors[rand].yPos
+
+};
+
+World.prototype.moveWorld = function(dir){
+	for(var i = 0; i < this.walls.length; i++){
+		this.walls[i].xPos += dir[0];
+		this.walls[i].yPos += dir[1];
 	}
-	return pos;
+	for(var i = 0; i < this.floors.length; i++){
+		this.floors[i].xPos += dir[0];
+		this.floors[i].yPos += dir[1];
+	}
 };
 
 World.prototype.draw = function(){
