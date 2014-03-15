@@ -8,8 +8,8 @@ Game.prototype.init = function(){
 	this.boardWidth = this.tileSize * this.numTilesAcross;
 
 	this.setupRenderContext();
-	var imgPaths = ["assets/wall.png", "assets/floor.png"];
-	var imgNames = ["wall", "floor"];
+	var imgPaths = ["assets/wall.png", "assets/floor.png", "assets/player.png"];
+	var imgNames = ["wall", "floor", "player"];
 
 	this.world = new World(this.canvas.width, this.canvas.height, this.context, this.numTilesAcross,
 							this.tileSize, imgPaths, imgNames);
